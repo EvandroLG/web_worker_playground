@@ -11,7 +11,6 @@ on(doc, 'DOMContentLoaded', () => {
 
   const onMessage = (e) => {
     console.log(e.data);
-    worker.postMessage('hello from web client!');
   }
 
   const onStop = () => {
@@ -19,6 +18,7 @@ on(doc, 'DOMContentLoaded', () => {
     on(btStartStop, 'click', onStart);
 
     btStartStop.innerText = 'Start';
+    worker.terminate();
   };
 
   const onStart = () => {
@@ -29,6 +29,9 @@ on(doc, 'DOMContentLoaded', () => {
 
     worker = new Worker('./worker.js');
     on(worker, 'message', onMessage);
+    worker.postMessage({
+      start: true
+    });
   };
 
   on(btStartStop, 'click', onStart);

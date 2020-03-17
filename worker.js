@@ -8,5 +8,15 @@ const fib = (n) => {
   return fib(n - 1) + fib(n - 2);
 }
 
-self.postMessage('hello from web worker!');
-self.onmessage = (e) => console.log(e.data);
+const getNext = (n) => {
+  self.postMessage({
+    idx: n,
+    num: fib(n),
+  });
+
+  getNext(n + 1);
+};
+
+self.onmessage = () => {
+  getNext(0);
+};
