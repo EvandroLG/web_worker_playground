@@ -7,10 +7,18 @@ const off = (element, event, callback) => element.removeEventListener(event, cal
 
 on(doc, 'DOMContentLoaded', () => {
   const btStartStop = getById('bt-start-stop');
+  const result = getById('box-result');
   let worker;
 
+  const render = (idx, num) => {
+    const p = document.createElement('p');
+    p.innerText = `idx: ${idx}, num: ${num}`;
+    result.insertBefore(p, result.firstChild);
+  }
+
   const onMessage = (e) => {
-    console.log(e.data);
+    const {idx, num} = e.data;
+    setTimeout(() => render(idx, num), 0);
   }
 
   const onStop = () => {
