@@ -7,8 +7,12 @@ const off = (element, event, callback) => element.removeEventListener(event, cal
 
 on(doc, 'DOMContentLoaded', () => {
   const btStartStop = getById('bt-start-stop');
+  let worker;
 
-  const onMessage = (e) => console.log(e.data);
+  const onMessage = (e) => {
+    console.log(e.data);
+    worker.postMessage('hello from web client!');
+  }
 
   const onStop = () => {
     off(btStartStop, 'click', onStop);
@@ -23,7 +27,7 @@ on(doc, 'DOMContentLoaded', () => {
 
     btStartStop.innerText = 'Stop';
 
-    const worker = new Worker('./worker.js');
+    worker = new Worker('./worker.js');
     on(worker, 'message', onMessage);
   };
 
